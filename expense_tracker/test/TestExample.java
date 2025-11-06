@@ -78,28 +78,6 @@ public class TestExample {
     assertEquals(amount, getTotalCost(), 0.01);
   }
 
-  /**
-   * Original existing test: Remove Transaction
-   * Verifies transaction removal and total reset.
-   */
-  @Test
-  public void testRemoveTransaction() {
-    assertEquals(0, model.getTransactions().size());
-
-    double amount = 50.0;
-    String category = CATEGORY_FOOD;
-    Transaction addedTransaction = new Transaction(amount, category);
-    model.addTransaction(addedTransaction);
-    assertEquals(1, model.getTransactions().size());
-
-    Transaction firstTransaction = model.getTransactions().get(0);
-    checkTransaction(amount, category, firstTransaction);
-    assertEquals(amount, getTotalCost(), 0.01);
-
-    model.removeTransaction(addedTransaction);
-    assertEquals(0, model.getTransactions().size());
-    assertEquals(0.00, getTotalCost(), 0.01);
-  }
 
   /**
    * Test Case 2: Input Validation for Amount

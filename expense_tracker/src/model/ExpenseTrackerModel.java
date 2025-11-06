@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ExpenseTrackerModel {
 
-  //encapsulation - data integrity
   private List<Transaction> transactions;
 
   public ExpenseTrackerModel() {
@@ -14,10 +13,6 @@ public class ExpenseTrackerModel {
   }
 
   public void addTransaction(Transaction t) {
-    // Perform input validation to guarantee that all transactions added are non-null.
-    if (t == null) {
-      throw new IllegalArgumentException("The new transaction must be non-null.");
-    }
     transactions.add(t);
   }
 
@@ -26,8 +21,9 @@ public class ExpenseTrackerModel {
   }
 
   public List<Transaction> getTransactions() {
-    //encapsulation - data integrity
-    return Collections.unmodifiableList(new ArrayList<>(transactions));
+    // Alternative 1: Apply the decorator design pattern (see below)
+    // Alternative 2: Return a copy of the list
+    return Collections.unmodifiableList(transactions);
   }
 
 }

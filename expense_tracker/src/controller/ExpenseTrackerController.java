@@ -27,8 +27,12 @@ public class ExpenseTrackerController {
     this.view = view;
   }
 
+  /**
+   * Sets the Strategy class being used in the applyFilter method.
+   *
+   * @param filter The concrete strategy class to be used for filtering
+   */
   public void setFilter(TransactionFilter filter) {
-    // Sets the Strategy class being used in the applyFilter method.
     this.filter = filter;
   }
 

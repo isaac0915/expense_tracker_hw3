@@ -76,6 +76,11 @@ public class ExpenseTrackerController {
     }
   }
 
+  /**
+   * Applies the filter specified by the user.
+   *
+   * NOTE) This is applying the Strategy design pattern. This is the core method using the strategy helper method.
+   */
   public void applyFilter() {
     List<Transaction> filteredTransactions;
     // If no filter is specified, show all transactions.

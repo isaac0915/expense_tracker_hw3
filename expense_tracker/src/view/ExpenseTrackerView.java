@@ -183,7 +183,6 @@ public class ExpenseTrackerView extends JFrame {
     return file;
   }
 
-  
   /**
    * Register an {@link ActionListener} that will be invoked when the Export
    * button is pressed. The listener typically calls the controller to perform

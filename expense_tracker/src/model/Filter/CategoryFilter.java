@@ -14,6 +14,12 @@ import controller.InputValidation;
 public class CategoryFilter implements TransactionFilter {
     private String categoryFilter;
 
+    /**
+     * Constructs a new CategoryFilter with the specified category.
+     * It validates the category to ensure it is a valid filter criterion.
+     * @param categoryFilter The category to filter transactions by.
+     * @throws IllegalArgumentException if the category is invalid.
+     */
     public CategoryFilter(String categoryFilter) {
         // Since the CategoryFilter constructor is public, 
         // the input validation needs to be performed again.
@@ -24,6 +30,12 @@ public class CategoryFilter implements TransactionFilter {
         }
     }
 
+    /**
+     * Filters a list of transactions, returning only those that match the filter's category (case-insensitive).
+     * @param transactions The list of transactions to filter.
+     * @return A new list containing only the transactions that match the category.
+     * @throws IllegalArgumentException if the transactions list is null.
+     */
     @Override
     public List<Transaction> filter(List<Transaction> transactions) {
 	// Perform input validation

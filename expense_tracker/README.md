@@ -13,6 +13,10 @@ This version adds filtering functionality (by amount or category), reuses input 
 
 ## How to Compile and Run
 
+There are two ways to compile and run the application:
+
+### 1. Manual Compilation (from `src` directory)
+
 From the terminal, navigate to the `src` directory and run:
 
 ```bash
@@ -20,6 +24,25 @@ cd src
 javac ExpenseTrackerApp.java
 java ExpenseTrackerApp
 ```
+
+### 2. Using Apache Ant (from `expense_tracker` directory)
+
+From the `expense_tracker` directory, you can use the following commands:
+
+- **Compile the source code:**
+  ```bash
+  ant compile
+  ```
+
+- **Run the application (after compiling):**
+  ```bash
+  java -cp bin ExpenseTrackerApp
+  ```
+
+- **Run the unit tests:**
+  ```bash
+  ant test
+  ```
 
 If compiled successfully, the Expense Tracker GUI will appear.
 

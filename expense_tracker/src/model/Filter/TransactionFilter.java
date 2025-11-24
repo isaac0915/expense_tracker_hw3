@@ -11,6 +11,11 @@ import model.Transaction;
  */
 public interface TransactionFilter {
 
+  /**
+   * Filters a given list of transactions based on a specific criterion.
+   * @param transactions The list of transactions to be filtered.
+   * @return A new list containing only the transactions that meet the filter's criteria.
+   */
   public List<Transaction> filter(List<Transaction> transactions);
 
 }

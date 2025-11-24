@@ -7,10 +7,19 @@ import view.ExpenseTrackerView;
 import model.Filter.AmountFilter;
 import model.Filter.CategoryFilter;
 
+/**
+ * The `ExpenseTrackerApp` class serves as the entry point for the application.
+ * It is responsible for initializing the main components of the Model-View-Controller (MVC) architecture,
+ * including the model, view, and controller. It sets up the graphical user interface (GUI) and
+ * registers event listeners to handle user interactions, such as adding transactions and applying filters.
+ * All GUI operations are safely executed on the Event Dispatch Thread (EDT) using `SwingUtilities.invokeLater`.
+ */
 public class ExpenseTrackerApp {
 
   /**
-   * @param args
+   * The main method that serves as the entry point for the application.
+   * It schedules the creation and display of the GUI on the Event Dispatch Thread.
+   * @param args Command line arguments (not used).
    */
   public static void main(String[] args) {
     // Ensure GUI creation and interaction happen on the Event Dispatch Thread

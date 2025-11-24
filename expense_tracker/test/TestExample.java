@@ -18,6 +18,11 @@ import model.Filter.AmountFilter;
 import model.Filter.CategoryFilter;
 import view.ExpenseTrackerView;
 
+/**
+ * Contains JUnit tests for the ExpenseTracker application.
+ * This class tests the functionality of adding transactions, input validation,
+ * and filtering by amount and category.
+ */
 public class TestExample {
   
   private ExpenseTrackerModel model;
@@ -27,6 +32,10 @@ public class TestExample {
   public static final String CATEGORY_FOOD = "food";
   public static final String CATEGORY_ENTERTAINMENT = "entertainment";  
     
+  /**
+   * Sets up the necessary components for each test.
+   * This method is run before each test, initializing a fresh model, view, and controller.
+   */
   @Before
   public void setup() {
     model = new ExpenseTrackerModel();
@@ -34,6 +43,10 @@ public class TestExample {
     controller = new ExpenseTrackerController(model, view);
   }
 
+  /**
+   * Calculates the total cost of all transactions currently in the model.
+   * @return The sum of all transaction amounts.
+   */
   public double getTotalCost() {
     double totalCost = 0.0;
     List<Transaction> allTransactions = model.getTransactions();
@@ -43,6 +56,12 @@ public class TestExample {
     return totalCost;
   }
 
+  /**
+   * Asserts that a transaction has the expected amount, category, and a recent timestamp.
+   * @param amount The expected amount of the transaction.
+   * @param category The expected category of the transaction.
+   * @param transaction The transaction object to check.
+   */
   public void checkTransaction(double amount, String category, Transaction transaction) {
     assertEquals(amount, transaction.getAmount(), 0.01);
     assertEquals(category, transaction.getCategory());

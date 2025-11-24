@@ -11,10 +11,18 @@ import model.ExpenseTrackerModel;
 import model.Transaction;
 import model.Filter.TransactionFilter;
 
+/**
+ * The `ExpenseTrackerController` class acts as the intermediary between the model and the view
+ * in the MVC architecture. It handles user input, processes it, and updates the model and view
+ * accordingly. It is responsible for actions like adding transactions and applying filters.
+ * This class also implements the Strategy design pattern for filtering, allowing different
+ * filtering strategies (e.g., by amount or category) to be used interchangeably.
+ */
 public class ExpenseTrackerController {
   
   private ExpenseTrackerModel model;
   private ExpenseTrackerView view;
+  
   /** 
    * The Controller is applying the Strategy design pattern.
    * This is the has-a relationship with the Strategy class 
@@ -22,6 +30,11 @@ public class ExpenseTrackerController {
    */
   private TransactionFilter filter;
 
+  /**
+   * Constructs a new ExpenseTrackerController.
+   * @param model The model for the expense tracker.
+   * @param view The view for the expense tracker.
+   */
   public ExpenseTrackerController(ExpenseTrackerModel model, ExpenseTrackerView view) {
     this.model = model;
     this.view = view;
@@ -36,11 +49,21 @@ public class ExpenseTrackerController {
     this.filter = filter;
   }
 
+  /**
+   * Refreshes the view with the current list of transactions from the model.
+   * This method is called to update the UI whenever the data changes.
+   */
   public void refresh() {
     List<Transaction> transactions = model.getTransactions();
     view.refreshTable(transactions);
   }
 
+  /**
+   * Adds a new transaction to the model after validating the input.
+   * @param amount The amount of the transaction.
+   * @param category The category of the transaction.
+   * @return true if the transaction was added successfully, false otherwise.
+   */
   public boolean addTransaction(double amount, String category) {
     if (!InputValidation.isValidAmount(amount)) {
       return false;

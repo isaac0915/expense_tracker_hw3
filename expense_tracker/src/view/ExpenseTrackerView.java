@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Transaction;
 
+/**
+ * The `ExpenseTrackerView` class is responsible for the user interface (UI) of the application.
+ * It displays the transaction data to the user and sends user actions (e.g., button clicks)
+ * to the controller. As the view component in the MVC architecture, it is designed to be
+ * unaware of the application's business logic and focuses solely on presentation.
+ */
 public class ExpenseTrackerView extends JFrame {
 
   private JTable transactionsTable;
@@ -28,6 +34,10 @@ public class ExpenseTrackerView extends JFrame {
     
   private List<Transaction> displayedTransactions = new ArrayList<>(); // ✅ Moved here
 
+  /**
+   * Constructs the ExpenseTrackerView and initializes all UI components.
+   * It sets up the main frame, table, input fields, and buttons.
+   */
   public ExpenseTrackerView() {
     setTitle("Expense Tracker");
     setSize(600, 400);
@@ -76,14 +86,27 @@ public class ExpenseTrackerView extends JFrame {
     setVisible(true);
   }
 
+  /**
+   * Returns the table model used by the transactions table.
+   * @return The `DefaultTableModel` for the transactions table.
+   */
   public DefaultTableModel getTableModel() {
     return model;
   }
 
+  /**
+   * Returns the transactions table component.
+   * @return The `JTable` component displaying transactions.
+   */
   public JTable getTransactionsTable() {
     return transactionsTable;
   }
 
+  /**
+   * Gets the amount value from the amount input field.
+   * It parses the text and returns a double value.
+   * @return The parsed amount as a double, or `Double.NaN` if parsing fails.
+   */
   public double getAmountField() {
     // Prefer the formatted value if available
     Object value = amountField.getValue();
@@ -105,30 +128,58 @@ public class ExpenseTrackerView extends JFrame {
     }
   }
 
+  /**
+   * Sets the amount field component.
+   * @param amountField The `JFormattedTextField` to be used for the amount.
+   */
   public void setAmountField(JFormattedTextField amountField) {
     this.amountField = amountField;
   }
 
+  /**
+   * Gets the category text from the category input field.
+   * @return The text content of the category field.
+   */
   public String getCategoryField() {
     return categoryField.getText();
   }
 
+  /**
+   * Sets the category field component.
+   * @param categoryField The `JTextField` to be used for the category.
+   */
   public void setCategoryField(JTextField categoryField) {
     this.categoryField = categoryField;
   }
 
+  /**
+   * Adds an `ActionListener` to the "Apply Category Filter" button.
+   * @param listener The `ActionListener` to be added.
+   */
   public void addApplyCategoryFilterListener(ActionListener listener) {
     categoryFilterBtn.addActionListener(listener);
   }
 
+  /**
+   * Shows an input dialog to get the category for filtering.
+   * @return The category string entered by the user.
+   */
   public String getCategoryFilterInput() {
     return JOptionPane.showInputDialog(this, "Enter Category Filter:");
   }
 
+  /**
+   * Adds an `ActionListener` to the "Apply Amount Filter" button.
+   * @param listener The `ActionListener` to be added.
+   */
   public void addApplyAmountFilterListener(ActionListener listener) {
     amountFilterBtn.addActionListener(listener);
   }
 
+  /**
+   * Shows an input dialog to get the amount for filtering.
+   * @return The amount entered by the user as a double, or 0.0 if parsing fails.
+   */
   public double getAmountFilterInput() {
     String input = JOptionPane.showInputDialog(this, "Enter Amount Filter:");
     try {
@@ -138,10 +189,20 @@ public class ExpenseTrackerView extends JFrame {
     }
   }
 
+  /**
+   * Adds an `ActionListener` to the "Clear Filter" button.
+   * @param listener The `ActionListener` to be added.
+   */
   public void addClearFilterListener(ActionListener listener) {
     clearFilterBtn.addActionListener(listener);
   }
     
+  /**
+   * Refreshes the transactions table with a new list of transactions.
+   * It clears the table and repopulates it with the given transactions,
+   * and also calculates and displays the total cost.
+   * @param transactions The list of `Transaction` objects to display.
+   */
   public void refreshTable(List<Transaction> transactions) {
     model.setRowCount(0);
     this.displayedTransactions = transactions; // ✅ Track displayed transactions
@@ -161,14 +222,27 @@ public class ExpenseTrackerView extends JFrame {
     transactionsTable.updateUI();
   }
 
+  /**
+   * Returns the "Add Transaction" button component.
+   * @return The `JButton` for adding a transaction.
+   */
   public JButton getAddTransactionBtn() {
     return addTransactionBtn;
   }
 
+  /**
+   * Displays a list of filtered transactions in the table.
+   * This is a convenience method that calls `refreshTable`.
+   * @param filteredTransactions The list of filtered transactions to display.
+   */
   public void displayFilteredTransactions(List<Transaction> filteredTransactions) {
     refreshTable(filteredTransactions);
   }
 
+  /**
+   * Returns the list of transactions currently displayed in the table.
+   * @return A list of `Transaction` objects.
+   */
   public List<Transaction> getDisplayedTransactions() {
     return displayedTransactions;
   }

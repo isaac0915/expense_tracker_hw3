@@ -89,7 +89,17 @@ All tests pass successfully (see `test_screenshot.png`).
 
 
 ### **Usability: Export to CSV file**
-For this feature, I would add an “Export to CSV” option in the UI where the user can enter a file name and click export. The controller will take that input, validate the file name (for example, must end with .csv and contain no invalid characters), and then get all transactions from the model. It will call a helper class like CSVExporter that writes the data to a CSV file with proper headers and one transaction per line. The user will get clear feedback on success or failure through the view. This follows MVC separation, avoids hardcoded strings, and keeps the controller open for adding new export formats later (like JSON) without changing existing code.
+This project includes a working "Export to CSV" feature.
+
+- UI: an **Export CSV** button opens a save dialog. The view validates the filename (non-empty and ending with `.csv`) and shows an error dialog when invalid. On success a confirmation dialog shows the exported path.
+- MVC: the View collects the file choice and the Controller performs the export by delegating to an `Exporter` strategy. The default implementation is `CsvExporter` which writes a header and one transaction row per line.
+- Files & locations:
+  - `src/view/ExpenseTrackerView.java` — `chooseExportFile()` and `addExportListener(...)` (UI + filename validation)
+  - `src/controller/ExpenseTrackerController.java` — `exportTransactions(...)` and `setExporter(...)`
+  - `src/controller/Exporter.java` — exporter interface
+  - `src/controller/CsvExporter.java` — CSV implementation (writes header + rows)
+- CSV format: first line is `Amount,Category,Timestamp`. Each remaining line is `amount,category,timestamp`.
+
 
 
 ### **Project Structure**

@@ -15,6 +15,12 @@ public class AmountFilter implements TransactionFilter{
     private double amountFilter;
     private static final double EPSILON = 1e-6;
 
+    /**
+     * Constructs a new AmountFilter with the specified amount.
+     * It validates the amount to ensure it is a valid filter criterion.
+     * @param amountFilter The amount to filter transactions by.
+     * @throws IllegalArgumentException if the amount is invalid.
+     */
     public AmountFilter(double amountFilter){
         // Since the AmountFilter constructor is public, 
         // the input validation needs to be performed again.
@@ -24,6 +30,14 @@ public class AmountFilter implements TransactionFilter{
             this.amountFilter = amountFilter;
         }
     }
+
+    /**
+     * Filters a list of transactions, returning only those that match the filter's amount.
+     * The comparison is done using a small epsilon to account for floating-point inaccuracies.
+     * @param transactions The list of transactions to filter.
+     * @return A new list containing only the transactions that match the amount.
+     * @throws IllegalArgumentException if the transactions list is null.
+     */
     @Override
     public List<Transaction> filter(List<Transaction> transactions){
 	// Perform input validation

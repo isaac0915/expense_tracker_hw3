@@ -1,6 +1,7 @@
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import controller.ExpenseTrackerController;
+import java.io.File;
 import model.ExpenseTrackerModel;
 import view.ExpenseTrackerView;
 import model.Filter.AmountFilter;
@@ -29,7 +30,8 @@ public class ExpenseTrackerApp {
           String category = view.getCategoryField();
 
           if (Double.isNaN(amount)) {
-            JOptionPane.showMessageDialog(view, "Please enter a valid numeric amount (e.g. 200 or 200.00)", "Invalid Amount", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(view, "Please enter a valid numeric amount (e.g. 200 or 200.00)",
+                "Invalid Amount", JOptionPane.ERROR_MESSAGE);
             view.toFront();
             return;
           }
@@ -40,9 +42,11 @@ public class ExpenseTrackerApp {
             view.toFront();
           }
         } catch (Exception ex) {
-          // Catch any unexpected runtime errors and show a helpful dialog instead of crashing
+          // Catch any unexpected runtime errors and show a helpful dialog instead of
+          // crashing
           String msg = ex.getMessage() == null ? ex.toString() : ex.getMessage();
-          JOptionPane.showMessageDialog(view, "An unexpected error occurred: " + msg, "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(view, "An unexpected error occurred: " + msg, "Error",
+              JOptionPane.ERROR_MESSAGE);
           ex.printStackTrace();
         }
       });
@@ -81,6 +85,20 @@ public class ExpenseTrackerApp {
       view.addClearFilterListener(e -> {
         controller.setFilter(null);
         controller.applyFilter();
+      });
+      
+      // Add action listener to the "Export" button
+      view.addExportListener(e -> {
+        try {
+          File file = view.chooseExportFile();
+          if (file == null)
+            return; // cancelled or invalid
+          controller.exportTransactions(view.getDisplayedTransactions(), file);
+          JOptionPane.showMessageDialog(view, "Exported to: " + file.getAbsolutePath());
+        } catch (Exception exception) {
+          JOptionPane.showMessageDialog(view, "Failed to export data: " + exception.getMessage());
+          view.toFront();
+        }
       });
     });
   }

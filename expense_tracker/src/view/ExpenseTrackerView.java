@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Transaction;
+import java.io.File;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ExpenseTrackerView extends JFrame {
 
@@ -25,14 +27,15 @@ public class ExpenseTrackerView extends JFrame {
   private JButton amountFilterBtn;
 
   private JButton clearFilterBtn;
-    
+  private JButton exportBtn;
+
   private List<Transaction> displayedTransactions = new ArrayList<>(); // ✅ Moved here
 
   public ExpenseTrackerView() {
     setTitle("Expense Tracker");
     setSize(600, 400);
 
-    String[] columnNames = {"serial", "Amount", "Category", "Date"};
+    String[] columnNames = { "serial", "Amount", "Category", "Date" };
     this.model = new DefaultTableModel(columnNames, 0);
 
     transactionsTable = new JTable(model);
@@ -55,11 +58,13 @@ public class ExpenseTrackerView extends JFrame {
     amountFilterBtn = new JButton("Filter by Amount");
 
     clearFilterBtn = new JButton("Clear Filter");
-    
+    exportBtn = new JButton("Export CSV");
+    exportBtn.setToolTipText("Export currently displayed transactions to a .csv file");
+
     JPanel inputPanel = new JPanel();
     inputPanel.add(amountLabel);
     inputPanel.add(amountField);
-    inputPanel.add(categoryLabel); 
+    inputPanel.add(categoryLabel);
     inputPanel.add(categoryField);
     inputPanel.add(addTransactionBtn);
 
@@ -67,9 +72,10 @@ public class ExpenseTrackerView extends JFrame {
     buttonPanel.add(amountFilterBtn);
     buttonPanel.add(categoryFilterBtn);
     buttonPanel.add(clearFilterBtn);
-    
+    buttonPanel.add(exportBtn);
+
     add(inputPanel, BorderLayout.NORTH);
-    add(new JScrollPane(transactionsTable), BorderLayout.CENTER); 
+    add(new JScrollPane(transactionsTable), BorderLayout.CENTER);
     add(buttonPanel, BorderLayout.SOUTH);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,7 +147,55 @@ public class ExpenseTrackerView extends JFrame {
   public void addClearFilterListener(ActionListener listener) {
     clearFilterBtn.addActionListener(listener);
   }
-    
+
+  /**
+   * Opens a file chooser dialog to select a CSV file for exporting.
+   * Validates that the selected file has a .csv extension.
+   *
+   * @return the selected File object, or null if the user cancels or
+   *         validation fails
+   */
+  public File chooseExportFile() {
+    JFileChooser chooser = new JFileChooser();
+    FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("CSV files", "csv");
+    chooser.setFileFilter(csvFilter);
+    int retval = chooser.showSaveDialog(this);
+    if (retval != JFileChooser.APPROVE_OPTION) {
+      return null; // user cancelled
+    }
+
+    File file = chooser.getSelectedFile();
+    String name = file == null ? null : file.getName();
+    if (name == null || name.trim().isEmpty()) {
+      JOptionPane.showMessageDialog(this,
+          "Please specify a non-empty file name that ends with '.csv'.", "Invalid File Name",
+          JOptionPane.ERROR_MESSAGE);
+      return null;
+    }
+
+    if (!name.toLowerCase().endsWith(".csv")) {
+      JOptionPane.showMessageDialog(this,
+          "File name must end with '.csv'. Please retry and include the extension.",
+          "Invalid File Extension", JOptionPane.ERROR_MESSAGE);
+      return null;
+    }
+
+    return file;
+  }
+
+  
+  /**
+   * Register an {@link ActionListener} that will be invoked when the Export
+   * button is pressed. The listener typically calls the controller to perform
+   * the actual export after calling {@link #chooseExportFile()} to obtain the
+   * destination {@link java.io.File}.
+   *
+   * @param listener the action listener to register
+   */
+  public void addExportListener(ActionListener listener) {
+    exportBtn.addActionListener(listener);
+  }
+
   public void refreshTable(List<Transaction> transactions) {
     model.setRowCount(0);
     this.displayedTransactions = transactions; // ✅ Track displayed transactions
@@ -154,10 +208,10 @@ public class ExpenseTrackerView extends JFrame {
     }
 
     for (Transaction t : transactions) {
-      model.addRow(new Object[]{++rowNum, t.getAmount(), t.getCategory(), t.getTimestamp()}); 
+      model.addRow(new Object[] { ++rowNum, t.getAmount(), t.getCategory(), t.getTimestamp() });
     }
 
-    model.addRow(new Object[]{"Total", null, null, totalCost});
+    model.addRow(new Object[] { "Total", null, null, totalCost });
     transactionsTable.updateUI();
   }
 
@@ -177,24 +231,26 @@ public class ExpenseTrackerView extends JFrame {
   // public void highlightRows(List<Integer> rowIndexes) { ... }
 
   // public void highlightRows(List<Integer> rowIndexes) {
-  //     // The row indices are being used as hashcodes for the transactions.
-  //     // The row index directly maps to the the transaction index in the list.
-  //     transactionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-  //         @Override
-  //         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-  //                                                       boolean hasFocus, int row, int column) {
-  //             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-  //             if (rowIndexes.contains(row)) {
-  //                 c.setBackground(new Color(173, 255, 168)); // Light green
-  //             } else {
-  //                 c.setBackground(table.getBackground());
-  //             }
-  //             return c;
-  //         }
-  //     });
-
-  //     transactionsTable.repaint();
+  // // The row indices are being used as hashcodes for the transactions.
+  // // The row index directly maps to the the transaction index in the list.
+  // transactionsTable.setDefaultRenderer(Object.class, new
+  // DefaultTableCellRenderer() {
+  // @Override
+  // public Component getTableCellRendererComponent(JTable table, Object value,
+  // boolean isSelected,
+  // boolean hasFocus, int row, int column) {
+  // Component c = super.getTableCellRendererComponent(table, value, isSelected,
+  // hasFocus, row, column);
+  // if (rowIndexes.contains(row)) {
+  // c.setBackground(new Color(173, 255, 168)); // Light green
+  // } else {
+  // c.setBackground(table.getBackground());
   // }
+  // return c;
+  // }
+  // });
 
+  // transactionsTable.repaint();
+  // }
 
 }

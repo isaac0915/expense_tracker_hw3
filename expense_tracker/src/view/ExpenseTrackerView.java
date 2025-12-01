@@ -11,6 +11,7 @@ import java.util.List;
 import model.Transaction;
 import java.io.File;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import controller.CsvExporter;
 
 /**
  * The `ExpenseTrackerView` class is responsible for the user interface (UI) of the application.
@@ -212,7 +213,7 @@ public class ExpenseTrackerView extends JFrame {
    */
   public File chooseExportFile() {
     JFileChooser chooser = new JFileChooser();
-    FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("CSV files", "csv");
+    FileNameExtensionFilter csvFilter = new FileNameExtensionFilter(CsvExporter.FILE_EXTENSION_DESCRIPTION, CsvExporter.FILE_EXTENSION.substring(1));
     chooser.setFileFilter(csvFilter);
     int retval = chooser.showSaveDialog(this);
     if (retval != JFileChooser.APPROVE_OPTION) {
@@ -223,14 +224,14 @@ public class ExpenseTrackerView extends JFrame {
     String name = file == null ? null : file.getName();
     if (name == null || name.trim().isEmpty()) {
       JOptionPane.showMessageDialog(this,
-          "Please specify a non-empty file name that ends with '.csv'.", "Invalid File Name",
+          "Please specify a non-empty file name that ends with '" + CsvExporter.FILE_EXTENSION + "'.", "Invalid File Name",
           JOptionPane.ERROR_MESSAGE);
       return null;
     }
 
-    if (!name.toLowerCase().endsWith(".csv")) {
+    if (!name.toLowerCase().endsWith(CsvExporter.FILE_EXTENSION)) {
       JOptionPane.showMessageDialog(this,
-          "File name must end with '.csv'. Please retry and include the extension.",
+          "File name must end with '" + CsvExporter.FILE_EXTENSION + "'. Please retry and include the extension.",
           "Invalid File Extension", JOptionPane.ERROR_MESSAGE);
       return null;
     }

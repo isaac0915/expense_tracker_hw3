@@ -10,6 +10,8 @@ import model.Transaction;
 public class CsvExporter implements Exporter {
 
     private static final String CSV_HEADER = "Amount,Category,Timestamp";
+    public static final String FILE_EXTENSION = ".csv";
+    public static final String FILE_EXTENSION_DESCRIPTION = "CSV Files (*.csv)";
 
     /**
      * Export transactions to the given file; throws IOException on write errors.
